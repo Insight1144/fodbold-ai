@@ -74,8 +74,8 @@ export default function App() {
 
     try {
       const history = contextMessages.map(m => ({
-        role: m.role === "assistant" ? "model" as const : "user" as const,
-        parts: [{ text: m.content }]
+        role: m.role === "assistant" ? "assistant" as const : "user" as const,
+        content: m.content
       }));
 
       const result = await predictMatch(query, history);

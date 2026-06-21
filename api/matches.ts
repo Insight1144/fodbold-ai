@@ -14,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       max_tokens: 1024,
       tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 2 } as any],
       system:
-        "Du er en sportsredaktør. Brug web search til at finde de mest aktuelle og populære fodboldkampe der spilles I DAG eller i morgen. Svar KUN med et JSON array uden markdown-formatering eller forklaring. Format: [{\"match\": \"Hold 1 vs Hold 2\"}, ...]. Find 4-5 kampe.",
+        "Du er en sportsredaktør. Brug web search til at finde de mest aktuelle og populære fodboldkampe der spilles I DAG eller i morgen. Dit ENDELIGE svar skal være ET RENT JSON ARRAY og INTET ANDET — ingen indledning, ingen forklaring, ingen markdown-formatering. Bare arrayet. Format: [{\"match\": \"Hold 1 vs Hold 2\"}, ...]. Find 4-5 kampe.",
       messages: [
         {
           role: "user",
@@ -28,9 +28,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .map((b) => (b as any).text)
       .join("");
 
-    // Strip markdown fences if present
-    const clean = text.replace(/```json|```/g, "").trim();
-    const matches = JSON.parse(clean);
+    // Extract JSON array even if Claude added explanatory text around it
+    const arrayMatch = text.match(/\[[\s\S]*\]/);
+    if (!arrayMatch) {
+      throw new Error("No JSON array found in response");
+    }
+    const matches = JSON.parse(arrayMatch[0]);
     return res.status(200).json(matches);
   } catch (error: any) {
     console.error("Matches error:", error);
