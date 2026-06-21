@@ -33,7 +33,9 @@ Dette kan inkludere:
 - Antal kort (baseret på dommerstatistik og kampens intensitet/rivalisering)
 - Kombinerede spil (Bet Builder forslag, f.eks. "Hjemmesejr + Over 2.5 mål + Begge hold scorer")
 
-Brug de nyeste statistikker fra din søgning til at retfærdiggøre dine oddsforslag.`;
+Brug de nyeste statistikker fra din søgning til at retfærdiggøre dine oddsforslag.
+
+VIGTIGT OM LÆNGDE: Hold din analyse kortfattet og fokuseret — maks. 400-500 ord i alt. Gå direkte til substansen uden lange indledninger eller opsummeringer. Prioriter de vigtigste faktorer (form, skader, tabel) frem for at nævne alt.`;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -56,8 +58,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ];
 
     const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 4096,
+      model: "claude-sonnet-4-6",
+      max_tokens: 1500,
       system: SYSTEM_PROMPT,
       tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 4 } as any],
       messages,
