@@ -10,9 +10,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 1024,
-      tools: [{ type: "web_search_20250305", name: "web_search" } as any],
+      tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 2 } as any],
       system:
         "Du er en sportsredaktør. Brug web search til at finde de mest aktuelle og populære fodboldkampe der spilles I DAG eller i morgen. Svar KUN med et JSON array uden markdown-formatering eller forklaring. Format: [{\"match\": \"Hold 1 vs Hold 2\"}, ...]. Find 4-5 kampe.",
       messages: [

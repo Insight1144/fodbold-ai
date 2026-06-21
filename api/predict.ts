@@ -56,10 +56,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ];
 
     const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 4096,
       system: SYSTEM_PROMPT,
-      tools: [{ type: "web_search_20250305", name: "web_search" } as any],
+      tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 4 } as any],
       messages,
     });
 
